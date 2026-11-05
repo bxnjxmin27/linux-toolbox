@@ -1,0 +1,25 @@
+PySide6-Essentials>=6.7
+Pillow
+pillow-heif
+numpy
+opencv-python-headless
+pymupdf
+pikepdf
+pdf2docx
+python-docx
+markdown
+weasyprint
+qrcode
+send2trash
+jeepney
+faster-whisper
+ctranslate2
+sentencepiece
+piper-tts
+onnxruntime
+rembg
+# Texterkennung: rapidocr-onnxruntime zieht sonst das volle opencv-python nach – install.sh installiert es ohne Abhängigkeiten
+pyclipper
+shapely
+pyyaml
+six

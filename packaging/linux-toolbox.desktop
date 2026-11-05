@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Toolbox
+GenericName=Werkzeugkasten
+Comment=94 lokale Werkzeuge für Video, Audio, Bilder, PDFs, Text und mehr
+Exec=@EXEC@
+Icon=linux-toolbox
+Terminal=false
+Categories=Utility;AudioVideo;Graphics;
+Keywords=PDF;Video;Audio;Konverter;OCR;Transkription;QR;
+StartupWMClass=linux-toolbox
+StartupNotify=true
