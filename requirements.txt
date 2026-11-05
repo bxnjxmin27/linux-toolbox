@@ -13,6 +13,7 @@ qrcode
 send2trash
 jeepney
 faster-whisper
+av>=11,<17
 ctranslate2
 sentencepiece
 piper-tts
@@ -22,4 +23,5 @@ rembg
 pyclipper
 shapely
 pyyaml
+six
 six

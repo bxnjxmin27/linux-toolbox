@@ -14,7 +14,7 @@ from pathlib import Path
 from .. import settings
 from ..context import ToolError
 from ..registry import F, tool
-from .images import fetch_model, open_img
+from .images import download, fetch_model, open_img
 
 CAT = "text"
 
@@ -189,13 +189,13 @@ def _ensure_pair(ctx, a, b) -> Path:
     ctx.log(f"Lade Übersetzungsmodell {a} → {b} (einmalig) …")
     idx = _argos_dir() / "index.json"
     if not idx.exists():
-        urllib.request.urlretrieve(ARGOS_INDEX, idx)
+        download(ctx, ARGOS_INDEX, idx, 0.05)
     entries = [e for e in json.loads(idx.read_text()) if e.get("from_code") == a and e.get("to_code") == b]
     if not entries:
         raise ToolError(f"Für {a} → {b} gibt es kein Modell.")
     link = entries[-1]["links"][0]
     z = _argos_dir() / f"{a}-{b}.argosmodel"
-    urllib.request.urlretrieve(link, z)
+    download(ctx, link, z, 0.5)
     with zipfile.ZipFile(z) as zf:
         tmp = _argos_dir() / f".x-{a}-{b}"
         shutil.rmtree(tmp, ignore_errors=True)

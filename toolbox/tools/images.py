@@ -64,14 +64,23 @@ def fetch_model(ctx, url: str, name: str) -> Path:
     if dest.exists() and dest.stat().st_size > 0:
         return dest
     ctx.log(f"Lade Modell {name} (einmalig) …")
-    tmp = dest.with_suffix(dest.suffix + ".part")
-
-    def hook(b, bs, total):
-        if total > 0:
-            ctx.progress(min(0.5, b * bs / total * 0.5))
-    urllib.request.urlretrieve(url, tmp, hook)
-    tmp.rename(dest)
+    download(ctx, url, dest, 0.5)
     return dest
+
+
+def download(ctx, url: str, dest: Path, share=1.0):
+    """Lädt eine Datei mit Fortschritt (manche Server sperren Anfragen ohne User-Agent)."""
+    tmp = dest.with_suffix(dest.suffix + ".part")
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (X11; Linux) Toolbox"})
+    with urllib.request.urlopen(req, timeout=60) as r, open(tmp, "wb") as out:
+        total = int(r.headers.get("Content-Length") or 0)
+        got = 0
+        while chunk := r.read(1 << 18):
+            out.write(chunk)
+            got += len(chunk)
+            if total:
+                ctx.progress(min(share, got / total * share))
+    tmp.rename(dest)
 
 
 def per_file(ctx, files, fn):
